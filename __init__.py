@@ -65,16 +65,16 @@ def setupWeb(self):
 
     # List of buttons on top right of editor
     righttopbtns = list()
-    righttopbtns.append(self._addButton(
-        'text_bold', 'bold', _("Bold text (Ctrl+B)"), id='bold'))
+    righttopbtns.append(self._addButton('text_bold', 'bold',
+                                        _("Bold text (Ctrl+B)"), id='bold'))
     righttopbtns.append(self._addButton(
         'text_italic', 'italic', _("Italic text (Ctrl+I)"), id='italic'))
     righttopbtns.append(self._addButton('text_under', 'underline', _(
         "Underline text (Ctrl+U)"), id='underline'))
     righttopbtns.append(self._addButton('text_super', 'super', _(
         "Superscript (Ctrl++)"), id='superscript'))
-    righttopbtns.append(self._addButton(
-        'text_sub', 'sub', _("Subscript (Ctrl+=)"), id='subscript'))
+    righttopbtns.append(self._addButton('text_sub', 'sub',
+                                        _("Subscript (Ctrl+=)"), id='subscript'))
     righttopbtns.append(self._addButton(
         'text_clear', 'clear', _("Remove formatting (Ctrl+R)")))
     # The color selection buttons do not use an icon so the HTML must be specified manually
