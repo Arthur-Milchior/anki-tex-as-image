@@ -1,0 +1,2 @@
+rm texAsImg.zip
+zip texAsImg.zip config.* *py  LICENSE *.md zipping --exclude \*~ \*zip ankiweb
