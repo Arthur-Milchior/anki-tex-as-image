@@ -126,11 +126,11 @@ def setupWeb(self):
 
 Editor.setupWeb = setupWeb
 
-oldBlur = Editor.onBridgeCmd
+oldBridgeCmd = Editor.onBridgeCmd
 
 
 def onBridgeCmd(self, cmd):
-    oldBlur(self, cmd)
+    r = oldBridgeCmd(self, cmd)
     if cmd.startswith("blur"):
         (type, ord, txt) = cmd.split(":", 2)
         val = self.note.fields[int(ord)]
@@ -139,6 +139,7 @@ def onBridgeCmd(self, cmd):
             mungeQA(val, None, None, self.note.model(), None, self.note.col))
         self.web.eval(
             f"setField({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
+    return r
 
 
 Editor.onBridgeCmd = onBridgeCmd
