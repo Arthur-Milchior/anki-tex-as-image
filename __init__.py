@@ -65,29 +65,29 @@ def setupWeb(self):
 
     # List of buttons on top right of editor
     righttopbtns = list()
-    righttopbtns.append(self._addButton('text_bold', 'bold',
-                                        _("Bold text (Ctrl+B)"), id='bold'))
+    righttopbtns.append(self._addButton(
+        'text_bold', 'bold', _("Bold text (Ctrl+B)"), id='bold'))
     righttopbtns.append(self._addButton(
         'text_italic', 'italic', _("Italic text (Ctrl+I)"), id='italic'))
     righttopbtns.append(self._addButton('text_under', 'underline', _(
         "Underline text (Ctrl+U)"), id='underline'))
     righttopbtns.append(self._addButton('text_super', 'super', _(
         "Superscript (Ctrl++)"), id='superscript'))
-    righttopbtns.append(self._addButton('text_sub', 'sub',
-                                        _("Subscript (Ctrl+=)"), id='subscript'))
+    righttopbtns.append(self._addButton(
+        'text_sub', 'sub', _("Subscript (Ctrl+=)"), id='subscript'))
     righttopbtns.append(self._addButton(
         'text_clear', 'clear', _("Remove formatting (Ctrl+R)")))
     # The color selection buttons do not use an icon so the HTML must be specified manually
     tip = _("Set foreground colour (F7)")
-    righttopbtns.append('''<button tabindex=-1 class=linkb title="{}"
+    righttopbtns.append("""<button tabindex=-1 class=linkb title="{}"
             type="button" onclick="pycmd('colour');return false;">
             <div id=forecolor style="display:inline-block; background: #000;border-radius: 5px;"
-            class=topbut></div></button>'''.format(tip))
+            class=topbut></div></button>""".format(tip))
     tip = _("Change colour (F8)")
-    righttopbtns.append('''<button tabindex=-1 class=linkb title="{}"
+    righttopbtns.append("""<button tabindex=-1 class=linkb title="{}"
             type="button" onclick="pycmd('changeCol');return false;">
             <div style="display:inline-block; border-radius: 5px;"
-            class="topbut rainbow"></div></button>'''.format(tip))
+            class="topbut rainbow"></div></button>""".format(tip))
     righttopbtns.append(self._addButton(
         'text_cloze', 'cloze', _("Cloze deletion (Ctrl+Shift+C)")))
     righttopbtns.append(self._addButton(
@@ -125,3 +125,20 @@ def setupWeb(self):
 
 
 Editor.setupWeb = setupWeb
+
+oldBlur = Editor.onBridgeCmd
+
+
+def onBridgeCmd(self, cmd):
+    oldBlur(self, cmd)
+    if cmd.startswith("blur"):
+        (type, ord, txt) = cmd.split(":", 2)
+        val = self.note.fields[int(ord)]
+        fldContent = self.mw.col.media.escapeImages(val)
+        fldContentTexProcessed = self.mw.col.media.escapeImages(
+            mungeQA(val, None, None, self.note.model(), None, self.note.col))
+        self.web.eval(
+            f"setField({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
+
+
+Editor.onBridgeCmd = onBridgeCmd

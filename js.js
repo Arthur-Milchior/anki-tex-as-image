@@ -46,6 +46,31 @@ function onFocusTex(elem) {
     }
 }
 
+function currentFieldOrdinalAux() {
+    if (currentField) {
+        return currentField.id.substring(1);
+    } else {
+        return null;
+    }
+}
+
+function setField(ord, fieldValue, fieldValueTexProcessed) {
+    var currentOrd = currentFieldOrdinalAux();
+    if (currentOrd == ord) {
+        return;
+    }
+    if (!fieldValue) {
+        fieldValue = "<br>";
+    }
+    originalFields[ord] = fieldValue;
+    if (!fieldValueTexProcessed) {
+        fieldValueTexProcessed = "<br>";
+    }
+    field = $("#f"+ord);
+    field.html(fieldValueTexProcessed);
+
+}
+
 function setFieldsTex(fields) {
     var txt = "";
     originalFields = [];
