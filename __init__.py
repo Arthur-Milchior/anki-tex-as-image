@@ -33,12 +33,9 @@ def setupWeb(self):
 
 Editor.setupWeb = wrap(Editor.setupWeb, setupWeb)
 
-oldBridgeCmd = Editor.onBridgeCmd
 
-
-def onBridgeCmd(context, message):
-    r = oldBridgeCmd(context, message)
-    if message.startswith("blur"):
+def onBridgeCmd(handled, message, context):
+    if isinstance(context, Editor) and message.startswith("blur"):
         (type, ord, txt) = message.split(":", 2)
         val = context.note.fields[int(ord)]
         fldContent = context.mw.col.media.escapeImages(val)
@@ -46,7 +43,8 @@ def onBridgeCmd(context, message):
             render_latex(val, context.note.model(), context.note.col))
         context.web.eval(
             f"set_field({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
-    return r
+    # Handling does not actually change. Actual work for blur must still be done
+    return handled
 
 
-Editor.onBridgeCmd = onBridgeCmd
+gui_hooks.webview_did_receive_js_message.append(onBridgeCmd)
