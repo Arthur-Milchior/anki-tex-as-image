@@ -1,12 +1,12 @@
 import json
 import os.path
 
-from anki.hooks import runFilter, runHook
-from anki.lang import _
+from anki.hooks import runHook, wrap
 from anki.latex import render_latex
-from aqt.editor import Editor, EditorWebView, _html
+from aqt.editor import Editor
 from aqt.qt import *
-from aqt.utils import shortcut
+
+from .from_file import str_from_file_name
 
 
 def loadNote(self, focusTo=None):
@@ -48,83 +48,12 @@ def loadNote(self, focusTo=None):
 
 Editor.loadNote = loadNote
 
-__location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__)))
-js_file = os.path.join(__location__, "js.js")
-with open(js_file, "r") as f:
-    js = f.read()
-js = f"""<script>{js}</script>"""
-
 
 def setupWeb(self):
-    self.web = EditorWebView(self.widget, self)
-    self.web.title = "editor"
-    self.web.allowDrops = True
-    self.web.onBridgeCmd = self.onBridgeCmd
-    self.outerLayout.addWidget(self.web, 1)
-
-    # List of buttons on top right of editor
-    righttopbtns = list()
-    righttopbtns.append(self._addButton('text_bold', 'bold',
-                                        _("Bold text (Ctrl+B)"), id='bold'))
-    righttopbtns.append(self._addButton(
-        'text_italic', 'italic', _("Italic text (Ctrl+I)"), id='italic'))
-    righttopbtns.append(self._addButton('text_under', 'underline', _(
-        "Underline text (Ctrl+U)"), id='underline'))
-    righttopbtns.append(self._addButton('text_super', 'super', _(
-        "Superscript (Ctrl++)"), id='superscript'))
-    righttopbtns.append(self._addButton('text_sub', 'sub',
-                                        _("Subscript (Ctrl+=)"), id='subscript'))
-    righttopbtns.append(self._addButton(
-        'text_clear', 'clear', _("Remove formatting (Ctrl+R)")))
-    # The color selection buttons do not use an icon so the HTML must be specified manually
-    tip = _("Set foreground colour (F7)")
-    righttopbtns.append("""<button tabindex=-1 class=linkb title="{}"
-            type="button" onclick="pycmd('colour');return false;">
-            <div id=forecolor style="display:inline-block; background: #000;border-radius: 5px;"
-            class=topbut></div></button>""".format(tip))
-    tip = _("Change colour (F8)")
-    righttopbtns.append("""<button tabindex=-1 class=linkb title="{}"
-            type="button" onclick="pycmd('changeCol');return false;">
-            <div style="display:inline-block; border-radius: 5px;"
-            class="topbut rainbow"></div></button>""".format(tip))
-    righttopbtns.append(self._addButton(
-        'text_cloze', 'cloze', _("Cloze deletion (Ctrl+Shift+C)")))
-    righttopbtns.append(self._addButton(
-        'paperclip', 'attach', _("Attach pictures/audio/video (F3)")))
-    righttopbtns.append(self._addButton(
-        'media-record', 'record', _("Record audio (F5)")))
-    righttopbtns.append(self._addButton('more', 'more'))
-    righttopbtns = runFilter("setupEditorButtons", righttopbtns, self)
-
-    # Fields... and Cards... button on top lefts, and
-    lefttopbtns = """
-                <button title='%(fldsTitle)s' onclick="pycmd('fields')">%(flds)s...</button>
-                <button title='%(cardsTitle)s' onclick="pycmd('cards')">%(cards)s...</button>
-        """ % dict(flds=_("Fields"), cards=_("Cards"),
-                   fldsTitle=_("Customize Fields"),
-                   cardsTitle=shortcut(_("Customize Card Templates (Ctrl+L)")))
-    topbuts = """
-            <div id="topbutsleft" style="float:left;">
-                %(lefttopbtns)s
-            </div>
-            <div id="topbutsright" style="float:right;">
-                %(rightbts)s
-            </div>
-        """ % dict(lefttopbtns=lefttopbtns, rightbts="".join(righttopbtns))
-    bgcol = self.mw.app.palette().window().color().name()
-    # then load page
-    html = _html % (
-        bgcol, bgcol,
-        topbuts,
-        _("Show Duplicates"))
-    self.web.stdHtml(html,
-                     css=["editor.css"],
-                     js=["jquery.js", "editor.js"],
-                     head=js)
+    self.web.eval(str_from_file_name("js.js"))
 
 
-Editor.setupWeb = setupWeb
+Editor.setupWeb = wrap(Editor.setupWeb, setupWeb)
 
 oldBridgeCmd = Editor.onBridgeCmd
 

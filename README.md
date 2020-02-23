@@ -29,7 +29,7 @@ It changes the javascript methods:
 
 and the python methods:
 * aqt.editor.Editor.loadNote
-* aqt.editor.Editor.setupWeb
+* aqt.editor.Editor.setupWeb (calling the previous one)
 
 ## Version 2.0
 None
