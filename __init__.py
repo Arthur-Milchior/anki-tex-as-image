@@ -3,7 +3,7 @@ import os.path
 
 from anki.hooks import runFilter, runHook
 from anki.lang import _
-from anki.latex import mungeQA
+from anki.latex import render_latex
 from aqt.editor import Editor, EditorWebView, _html
 from aqt.qt import *
 from aqt.utils import shortcut
@@ -19,7 +19,7 @@ def loadNote(self, focusTo=None):
     for fld, val in list(self.note.items()):
         fldContent = self.mw.col.media.escapeImages(val)
         fldContentTexProcessed = self.mw.col.media.escapeImages(
-            mungeQA(val, None, None, self.note.model(), None, self.note.col))
+            render_latex(val, self.note.model(), self.note.col))
         data.append((
             fld,
             fldContent,
@@ -136,7 +136,7 @@ def onBridgeCmd(self, cmd):
         val = self.note.fields[int(ord)]
         fldContent = self.mw.col.media.escapeImages(val)
         fldContentTexProcessed = self.mw.col.media.escapeImages(
-            mungeQA(val, None, None, self.note.model(), None, self.note.col))
+            render_latex(val, self.note.model(), self.note.col))
         self.web.eval(
             f"setField({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
     return r
