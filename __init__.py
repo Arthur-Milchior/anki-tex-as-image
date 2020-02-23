@@ -3,50 +3,28 @@ import os.path
 
 from anki.hooks import runHook, wrap
 from anki.latex import render_latex
+from aqt import gui_hooks
 from aqt.editor import Editor
 from aqt.qt import *
 
 from .from_file import str_from_file_name
 
 
-def loadNote(self, focusTo=None):
-    """Todo
-     focusTo -- Whether focus should be set to some field."""
-    if not self.note:
-        return
-
-    data = []
-    for fld, val in list(self.note.items()):
-        fldContent = self.mw.col.media.escapeImages(val)
-        fldContentTexProcessed = self.mw.col.media.escapeImages(
-            render_latex(val, self.note.model(), self.note.col))
-        data.append((
-            fld,
-            fldContent,
-            fldContentTexProcessed
-        ))
-        # field name, field content modified so that it's image's url can be used locally.
-    print(f"data is {data}")
-    self.widget.show()
-    self.updateTags()
-
-    def oncallback(arg):
-        if not self.note:
-            return
-        self.setupForegroundButton()
-        self.checkValid()
-        if focusTo is not None:
-            self.web.setFocus()
-        runHook("loadNote", self)
-
-    self.web.evalWithCallback("set_fields_tex(%s); setFonts(%s); focusField(%s); setNoteId(%s)" % (
-        json.dumps(data),
-        json.dumps(self.fonts()), json.dumps(focusTo),
-        json.dumps(self.note.id)),
-        oncallback)
+def note_loaded(editor):
+    note = editor.note
+    items = editor.note.items()
+    model = editor.note.model()
+    col = editor.note.col
+    fldContentTexProcessed = [
+        editor.mw.col.media.escapeImages(
+            render_latex(val, model, col))
+        for fld, val in items
+    ]
+    dumped = json.dumps(fldContentTexProcessed)
+    editor.web.eval(f"""set_texs({dumped});""")
 
 
-Editor.loadNote = loadNote
+gui_hooks.editor_did_load_note.append(note_loaded)
 
 
 def setupWeb(self):
