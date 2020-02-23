@@ -36,15 +36,15 @@ Editor.setupWeb = wrap(Editor.setupWeb, setupWeb)
 oldBridgeCmd = Editor.onBridgeCmd
 
 
-def onBridgeCmd(self, cmd):
-    r = oldBridgeCmd(self, cmd)
+def onBridgeCmd(context, cmd):
+    r = oldBridgeCmd(context, cmd)
     if cmd.startswith("blur"):
         (type, ord, txt) = cmd.split(":", 2)
-        val = self.note.fields[int(ord)]
-        fldContent = self.mw.col.media.escapeImages(val)
-        fldContentTexProcessed = self.mw.col.media.escapeImages(
-            render_latex(val, self.note.model(), self.note.col))
-        self.web.eval(
+        val = context.note.fields[int(ord)]
+        fldContent = context.mw.col.media.escapeImages(val)
+        fldContentTexProcessed = context.mw.col.media.escapeImages(
+            render_latex(val, context.note.model(), context.note.col))
+        context.web.eval(
             f"set_field({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
     return r
 
