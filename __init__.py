@@ -36,10 +36,10 @@ Editor.setupWeb = wrap(Editor.setupWeb, setupWeb)
 oldBridgeCmd = Editor.onBridgeCmd
 
 
-def onBridgeCmd(context, cmd):
-    r = oldBridgeCmd(context, cmd)
-    if cmd.startswith("blur"):
-        (type, ord, txt) = cmd.split(":", 2)
+def onBridgeCmd(context, message):
+    r = oldBridgeCmd(context, message)
+    if message.startswith("blur"):
+        (type, ord, txt) = message.split(":", 2)
         val = context.note.fields[int(ord)]
         fldContent = context.mw.col.media.escapeImages(val)
         fldContentTexProcessed = context.mw.col.media.escapeImages(
