@@ -1,6 +1,6 @@
-var originalFields = [];
+var original_fields = [];
 
-function onFocusTex(elem) {
+function on_focus_tex(elem) {
     /*
        Called when focus is set to the field `elem`.
 
@@ -13,10 +13,10 @@ function onFocusTex(elem) {
     var previousCurrentField = currentField;
     currentField = elem;
     var ord = currentFieldOrdinal()
-    var field = originalFields[ord];
+    var field = original_fields[ord];
     if (field !== null) {
         elem.innerHTML = field;
-        originalFields[ord] = null;
+        original_fields[ord] = null;
     }
     if (previousCurrentField === elem) {
         // anki window refocused; current element unchanged
@@ -46,7 +46,7 @@ function onFocusTex(elem) {
     }
 }
 
-function currentFieldOrdinalAux() {
+function current_field_ordinal_aux() {
     if (currentField) {
         return currentField.id.substring(1);
     } else {
@@ -54,15 +54,15 @@ function currentFieldOrdinalAux() {
     }
 }
 
-function setField(ord, fieldValue, fieldValueTexProcessed) {
-    var currentOrd = currentFieldOrdinalAux();
+function set_field(ord, fieldValue, fieldValueTexProcessed) {
+    var currentOrd = current_field_ordinal_aux();
     if (currentOrd == ord) {
         return;
     }
     if (!fieldValue) {
         fieldValue = "<br>";
     }
-    originalFields[ord] = fieldValue;
+    original_fields[ord] = fieldValue;
     if (!fieldValueTexProcessed) {
         fieldValueTexProcessed = "<br>";
     }
@@ -71,23 +71,23 @@ function setField(ord, fieldValue, fieldValueTexProcessed) {
 
 }
 
-function setFieldsTex(fields) {
+function set_fields_tex(fields) {
     var txt = "";
-    originalFields = [];
+    original_fields = [];
     for (var i = 0; i < fields.length; i++) {
         var n = fields[i][0];
         var f = fields[i][1];
         if (!f) {
             f = "<br>";
         }
-        originalFields[i] = f;
+        original_fields[i] = f;
         var fTex = fields[i][2];
         if (!fTex) {
             fTex = "<br>";
         }
         txt += "<tr><td class=fname>{0}</td></tr><tr><td width=100%>".format(n);
         txt += "<div id=f{0} onkeydown='onKey();' oninput='onInput()' onmouseup='onKey();'".format(i);
-        txt += " onfocus='onFocusTex(this);' onblur='onBlur();' class='field clearfix' ";
+        txt += " onfocus='on_focus_tex(this);' onblur='onBlur();' class='field clearfix' ";
         txt += "ondragover='onDragOver(this);' onpaste='onPaste(this);' ";
         txt += "oncopy='onCutOrCopy(this);' oncut='onCutOrCopy(this);' ";
         txt += "contentEditable=true class=field>{0}</div>".format(fTex);

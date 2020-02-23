@@ -39,7 +39,7 @@ def loadNote(self, focusTo=None):
             self.web.setFocus()
         runHook("loadNote", self)
 
-    self.web.evalWithCallback("setFieldsTex(%s); setFonts(%s); focusField(%s); setNoteId(%s)" % (
+    self.web.evalWithCallback("set_fields_tex(%s); setFonts(%s); focusField(%s); setNoteId(%s)" % (
         json.dumps(data),
         json.dumps(self.fonts()), json.dumps(focusTo),
         json.dumps(self.note.id)),
@@ -67,7 +67,7 @@ def onBridgeCmd(self, cmd):
         fldContentTexProcessed = self.mw.col.media.escapeImages(
             render_latex(val, self.note.model(), self.note.col))
         self.web.eval(
-            f"setField({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
+            f"set_field({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});")
     return r
 
 
