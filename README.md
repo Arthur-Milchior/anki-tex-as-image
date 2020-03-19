@@ -27,13 +27,6 @@ It changes the javascript methods:
 * onFocus
 * setFields
 
-and the python methods:
-* aqt.editor.Editor.loadNote
-* aqt.editor.Editor.setupWeb (calling the previous one)
-
-## Version 2.0
-None
-
 ## TODO
 ### Save TeX in tag
 Save original tex in html image tag. So that if the bug I consider

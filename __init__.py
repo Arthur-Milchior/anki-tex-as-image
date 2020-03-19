@@ -3,8 +3,9 @@ import os.path
 
 from anki.hooks import runHook, wrap
 from anki.latex import render_latex
-from aqt import gui_hooks
-from aqt.editor import Editor
+from aqt import gui_hooks, mw
+from aqt.editor import Editor, EditorWebView
+from aqt.webview import WebContent
 from aqt.qt import *
 
 from .from_file import str_from_file_name
@@ -26,14 +27,6 @@ def note_loaded(editor):
 
 gui_hooks.editor_did_load_note.append(note_loaded)
 
-
-def setupWeb(self):
-    self.web.eval(str_from_file_name("js.js"))
-
-
-Editor.setupWeb = wrap(Editor.setupWeb, setupWeb)
-
-
 def onBridgeCmd(handled, message, context):
     if isinstance(context, Editor) and message.startswith("blur"):
         (type, ord, txt) = message.split(":", 2)
@@ -48,3 +41,14 @@ def onBridgeCmd(handled, message, context):
 
 
 gui_hooks.webview_did_receive_js_message.append(onBridgeCmd)
+mw.addonManager.setWebExports(__name__, r"web/.*(css|js)")
+
+
+def on_webview_will_set_content(web_content: WebContent, context):
+    if isinstance(context, Editor):
+        addon_package = mw.addonManager.addonFromModule(__name__)
+        s = f"/_addons/{addon_package}/web/js.js"
+        web_content.js.append(s)
+
+
+gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
