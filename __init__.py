@@ -8,8 +8,6 @@ from aqt.editor import Editor, EditorWebView
 from aqt.webview import WebContent
 from aqt.qt import *
 
-from .from_file import str_from_file_name
-
 
 def note_loaded(editor):
     note = editor.note
