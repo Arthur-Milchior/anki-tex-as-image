@@ -1,3 +1,7 @@
+/**
+Contains the original fields, as in the note database. Or None if this
+value is already in the field.
+*/
 var original_fields = [];
 
 function on_focus_tex(event) {
@@ -11,9 +15,8 @@ function on_focus_tex(event) {
 
     */
     elem = event.target;
-    var previousCurrentField = currentField;
     currentField = elem;
-    var ord = currentFieldOrdinal()
+    var ord = currentFieldOrdinal();
     var field = original_fields[ord];
     if (field !== null) {
         elem.innerHTML = field;
@@ -29,7 +32,7 @@ function current_field_ordinal_aux() {
     }
 }
 
-function set_field(ord, fieldValue, fieldValueTexProcessed) {
+function set_tex(ord, fieldValue, fieldValueTexProcessed) {
     var currentOrd = current_field_ordinal_aux();
     if (currentOrd == ord) {
         return;
@@ -49,8 +52,7 @@ function set_field(ord, fieldValue, fieldValueTexProcessed) {
 function set_texs(tex){
     nb_fields = tex.length;
     original_fields = new Array(nb_fields);
-    var i;
-    for (i = 0; i < nb_fields; i++) {
+    for (var i = 0; i < nb_fields; i++) {
         fieldValue = tex[i];
         if (fieldValue === "") {
             fieldValue = "<br>";
