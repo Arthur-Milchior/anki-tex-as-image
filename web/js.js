@@ -46,7 +46,7 @@ function set_tex(ord, fieldValue, fieldValueTexProcessed) {
     }
     field = $("#f"+ord);
     field.html(fieldValueTexProcessed);
-
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub,`f${ord}`]);
 }
 
 function set_texs(tex){
@@ -61,5 +61,6 @@ function set_texs(tex){
         original_fields[i] = $div.html();
         $div.html(fieldValue);
         $div.focus(on_focus_tex);
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub,`f${i}`]);
     }
 }

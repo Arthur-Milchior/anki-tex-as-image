@@ -36,7 +36,6 @@ def onBridgeCmd(handled, message, editor):
         fldContentTexProcessed = editor.mw.col.media.escapeImages(
             render_latex(val, editor.note.model(), editor.note.col))
         s = f"set_tex({ord}, {json.dumps(fldContent)}, {json.dumps(fldContentTexProcessed)});"
-        print(s)
         editor.web.eval(s)
         return (True, None)
     # Handling does not actually change. Actual work for blur must still be done
@@ -49,6 +48,8 @@ gui_hooks.webview_did_receive_js_message.append(onBridgeCmd)
 def on_webview_will_set_content(web_content: WebContent, editor):
     if isinstance(editor, Editor):
         web_content.js.append(f"/_addons/{addon_package}/web/js.js")
+        web_content.js.append("mathjax/conf.js")
+        web_content.js.append("mathjax/MathJax.js")
 
 
 gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
