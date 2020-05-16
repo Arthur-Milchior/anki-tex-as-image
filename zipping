@@ -1,2 +1,2 @@
 rm texAsImg.zip
-zip texAsImg.zip web *js config.* *py  LICENSE *.md zipping --exclude \*~ \*zip ankiweb
+zip -r texAsImg.zip web *js config.* *py  LICENSE *.md zipping --exclude \*~ \*zip ankiweb
