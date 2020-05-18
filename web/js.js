@@ -17,9 +17,9 @@ function on_focus_tex(event) {
     elem = event.target;
     currentField = elem;
     var ord = currentFieldOrdinal();
-    var field = original_fields[ord];
-    if (field !== null) {
-        elem.innerHTML = field;
+    var field_content = original_fields[ord];
+    if (field_content !== null) {
+        elem.innerHTML = field_content;
         original_fields[ord] = null;
     }
 }
