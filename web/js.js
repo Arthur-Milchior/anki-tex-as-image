@@ -17,9 +17,14 @@ function on_focus_tex(event) {
     elem = event.target;
     currentField = elem;
     var ord = currentFieldOrdinal();
+    on_focus_field(ord);
+}
+
+function on_focus_field(ord) {
     var field_content = original_fields[ord];
+    var $field = $("#f"+ord);
     if (field_content !== null) {
-        elem.innerHTML = field_content;
+        $field.html(field_content);
         original_fields[ord] = null;
     }
 }
