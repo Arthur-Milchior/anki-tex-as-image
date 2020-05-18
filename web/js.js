@@ -44,8 +44,8 @@ function set_tex(ord, fieldValue, fieldValueTexProcessed) {
     if (!fieldValueTexProcessed) {
         fieldValueTexProcessed = "<br>";
     }
-    field = $("#f"+ord);
-    field.html(fieldValueTexProcessed);
+    $field = $("#f"+ord);
+    $field.html(fieldValueTexProcessed);
     MathJax.Hub.Queue(["Typeset", MathJax.Hub,`f${ord}`]);
 }
 
