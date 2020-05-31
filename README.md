@@ -1,4 +1,4 @@
-# Uses tex/mathjax as image in editor/reviewer
+# Uses tex/mathjax as image in editor/addcard/browser
 ## Rationale
 Most of the time, I don't care about the LaTeX/MathJax code, appart
 when I want to edit it. I prefer to see the result. So this add-on
