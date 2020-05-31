@@ -29,16 +29,8 @@ function on_focus_field(ord) {
     }
 }
 
-function current_field_ordinal_aux() {
-    if (currentField) {
-        return currentField.id.substring(1);
-    } else {
-        return null;
-    }
-}
-
 function set_tex(ord, fieldValue, fieldValueTexProcessed) {
-    var currentOrd = current_field_ordinal_aux();
+    var currentOrd = currentFieldOrdinal();
     if (currentOrd == ord) {
         return;
     }
