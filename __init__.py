@@ -49,8 +49,8 @@ gui_hooks.webview_did_receive_js_message.append(onBridgeCmd)
 def on_webview_will_set_content(web_content: WebContent, editor):
     if isinstance(editor, Editor):
         web_content.js.append(f"/_addons/{addon_package}/web/js.js")
-        web_content.js.append("mathjax/conf.js")
-        web_content.js.append("mathjax/MathJax.js")
+        web_content.js.append(f"/_addons/{addon_package}/web/mathjax/conf.js")
+        web_content.js.append(f"/_addons/{addon_package}/web/mathjax/MathJax.js")
 
 
 gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
