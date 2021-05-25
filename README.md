@@ -9,10 +9,6 @@ field you want to edit.
 ![Example](ex.png)
 
 ## Warning
-### Incompatible add-ons
-A previous version of the add-on was incompatible with multiple other
-add-ons. It is now corrected.
-
 ## Technical
 
 The note editor is actually an html page. Each time a field is edited,
@@ -29,10 +25,6 @@ It changes the javascript methods:
 * setFields
 
 ## TODO
-### Save TeX in tag
-Save original tex in html image tag. So that if the bug I consider
-above occurs, tex can be taken back. 
-
 ### Replace by TeX code when clicking on image
 Currently, as soon as field is selected, LaTeX code come back. It may
 be better to do this change when we click on image. I'll see when I
