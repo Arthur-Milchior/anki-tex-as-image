@@ -9,7 +9,7 @@ from . import web_export
 from aqt.editor import Editor
 
 def texify(original_field, editor):
-    model = editor.note.model()
+    model = editor.note.note_type()
     col = editor.note.col
     return editor.mw.col.media.escapeImages(
         render_latex(original_field, model, col))
